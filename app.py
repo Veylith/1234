@@ -358,9 +358,12 @@ Evaluated across **N = 10,000 multimodal samples** (FaceForensics++, DFDC, Celeb
     </div>
     """)
 
-# Include all FastAPI routes into demo.app so /api/... and /docs endpoints are live
+# Mount static files for the full web dashboard at /web
 demo.app.mount("/web", StaticFiles(directory=ROOT_DIR, html=True), name="web_frontend")
-demo.app.include_router(fastapi_app.router)
+
+# Merge all /api and /ws routes from fastapi_app into demo.app
+api_routes = [r for r in fastapi_app.routes if hasattr(r, "path") and (r.path.startswith("/api") or r.path.startswith("/ws"))]
+demo.app.routes.extend(api_routes)
 
 # Launch using standard Gradio launch (required for ZeroGPU hook)
 demo.launch(server_name="0.0.0.0", server_port=7860)
