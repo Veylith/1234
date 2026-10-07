@@ -1,7 +1,7 @@
 """
 DeepScan AI — Hugging Face Space Application
 Serves the custom Cyberpunk Obsidian Web Dashboard at root `/`
-with ZeroGPU acceleration and full FastAPI REST endpoints.
+with ZeroGPU A100 acceleration and full FastAPI REST endpoints.
 """
 
 import os
@@ -25,7 +25,11 @@ if BACKEND_DIR not in sys.path:
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
-# Hugging Face ZeroGPU safe compatibility
+# ─────────────────────────────────────────────────────────────
+# Hugging Face ZeroGPU Setup & Global Accelerated Functions
+# (CRITICAL: Functions MUST be defined at module top-level)
+# ─────────────────────────────────────────────────────────────
+
 try:
     import spaces
     _HAS_SPACES = True
@@ -60,13 +64,58 @@ from backend.main import (
     get_video_detector,
 )
 
-# Ensure the custom Cyberpunk Obsidian web frontend is mounted at root `/`
-frontend_dir = ROOT_DIR
-# Note: backend/main.py already mounted frontend_dir at "/", but we ensure it here as well
-try:
-    fastapi_app.mount("/web", StaticFiles(directory=frontend_dir, html=True), name="web_dashboard")
-except Exception:
-    pass
+
+# ── Global Top-Level @spaces.GPU Functions ──
+# Hugging Face ZeroGPU checks for these specifically in module globals at startup!
+
+@spaces.GPU(duration=60)
+def zero_gpu_image_inference(input_img):
+    """Global ZeroGPU worker for image deepfake & ELA neural inference."""
+    if input_img is None:
+        return "⚠️ Please upload an image or take a photo.", None, None, {}
+    try:
+        pil_img = Image.fromarray(input_img) if isinstance(input_img, np.ndarray) else input_img
+        face_detector = get_face_detector()
+        faces = face_detector.detect_faces(pil_img)
+        deepfake_detector = get_deepfake_detector()
+        image_classifier = get_image_classifier()
+        np_frame = np.array(pil_img)
+        df_result = deepfake_detector.analyze(np_frame, faces)
+        ela_img = image_classifier.compute_ela(pil_img)
+        face_crop = None
+        if faces and len(faces) > 0 and faces[0].get("crop") is not None:
+            face_crop = Image.fromarray(faces[0]["crop"])
+        score = df_result.get("authenticity_score", 0.0)
+        verdict = df_result.get("authenticity_verdict", "Analysis Complete")
+        is_fake = score >= 0.5
+        conf_pct = round(score * 100, 1) if is_fake else round((1 - score) * 100, 1)
+        status_color = "#ef4444" if is_fake else "#10b981"
+        badge = "🚨 DEEPFAKE DETECTED" if is_fake else "✅ AUTHENTIC HUMAN MEDIA"
+        summary_md = f"### <span style='color: {status_color};'>{badge}</span>\n**Verdict**: {verdict}\n**Confidence**: {conf_pct}%"
+        signals = df_result.get("authenticity_signals", {})
+        return summary_md, face_crop, ela_img, json.dumps(signals, indent=2)
+    except Exception as e:
+        return f"❌ Error: {str(e)}", None, None, {"error": str(e)}
+
+
+@spaces.GPU(duration=120)
+def zero_gpu_video_inference(video_path):
+    """Global ZeroGPU worker for video temporal deepfake inference."""
+    try:
+        video_detector = get_video_detector()
+        return video_detector.analyze(video_path)
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@spaces.GPU(duration=60)
+def zero_gpu_audio_inference(audio_path):
+    """Global ZeroGPU worker for audio voice clone inference."""
+    try:
+        audio_detector = get_audio_detector()
+        return audio_detector.analyze(audio_path)
+    except Exception as e:
+        return {"error": str(e)}
 
 
 # ─────────────────────────────────────────────────────────────
@@ -77,39 +126,11 @@ def build_gradio_app():
     if not _HAS_GRADIO:
         return None
 
-    @spaces.GPU
-    def analyze_image_gradio(input_img):
-        if input_img is None:
-            return "⚠️ Please upload an image or take a photo.", None, None, {}
-        try:
-            pil_img = Image.fromarray(input_img) if isinstance(input_img, np.ndarray) else input_img
-            face_detector = get_face_detector()
-            faces = face_detector.detect_faces(pil_img)
-            deepfake_detector = get_deepfake_detector()
-            image_classifier = get_image_classifier()
-            np_frame = np.array(pil_img)
-            df_result = deepfake_detector.analyze(np_frame, faces)
-            ela_img = image_classifier.compute_ela(pil_img)
-            face_crop = None
-            if faces and len(faces) > 0 and faces[0].get("crop") is not None:
-                face_crop = Image.fromarray(faces[0]["crop"])
-            score = df_result.get("authenticity_score", 0.0)
-            verdict = df_result.get("authenticity_verdict", "Analysis Complete")
-            is_fake = score >= 0.5
-            conf_pct = round(score * 100, 1) if is_fake else round((1 - score) * 100, 1)
-            status_color = "#ef4444" if is_fake else "#10b981"
-            badge = "🚨 DEEPFAKE DETECTED" if is_fake else "✅ AUTHENTIC HUMAN MEDIA"
-            summary_md = f"### <span style='color: {status_color};'>{badge}</span>\n**Verdict**: {verdict}\n**Confidence**: {conf_pct}%"
-            signals = df_result.get("authenticity_signals", {})
-            return summary_md, face_crop, ela_img, json.dumps(signals, indent=2)
-        except Exception as e:
-            return f"❌ Error: {str(e)}", None, None, {"error": str(e)}
-
     with gr.Blocks(theme=gr.themes.Soft(primary_hue="blue", neutral_hue="slate"), title="DeepScan AI") as demo:
         gr.HTML("""
         <div style="text-align: center; padding: 16px; background: #0f172a; border-radius: 12px; margin-bottom: 12px;">
             <h2 style="color: #38bdf8; margin: 0 0 6px 0;">🛡️ DeepScan AI — Neural Inspector</h2>
-            <p style="color: #94a3b8; margin: 0 0 10px 0;">Backup Gradio Inspector Interface</p>
+            <p style="color: #94a3b8; margin: 0 0 10px 0;">Secondary Gradio Inspector Interface</p>
             <a href="/" target="_self" style="color: #38bdf8; font-weight: bold; text-decoration: underline; font-size: 1.1rem;">👉 Return to Full Cyberpunk Web Dashboard</a>
         </div>
         """)
@@ -125,7 +146,7 @@ def build_gradio_app():
                             crop_out = gr.Image(label="Face Crop", type="pil")
                             ela_out = gr.Image(label="ELA Heatmap", type="pil")
                         sig_out = gr.JSON(label="Signals")
-                btn.click(fn=analyze_image_gradio, inputs=[img_in], outputs=[res_md, crop_out, ela_out, sig_out])
+                btn.click(fn=zero_gpu_image_inference, inputs=[img_in], outputs=[res_md, crop_out, ela_out, sig_out])
     return demo
 
 

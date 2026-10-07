@@ -143,8 +143,8 @@ def _prewarm():
     """Load models in background so first requests are instant."""
     # In cloud environments with strict RAM limits (e.g. Render Free 512MB),
     # skip pre-warming all 7 heavy models simultaneously to prevent OOM crash.
-    if os.environ.get("RENDER") or os.environ.get("LOW_MEMORY"):
-        logger.info("Render cloud environment detected (512MB limit). Skipping bulk pre-warming; models will load on demand.")
+    if os.environ.get("RENDER") or os.environ.get("LOW_MEMORY") or os.environ.get("SPACE_ID") or os.environ.get("HF_SPACE"):
+        logger.info("Cloud environment detected. Skipping bulk pre-warming; models will load on demand under GPU context.")
         try:
             get_face_detector()
             logger.info("✓ Lightweight FaceDetector initialized.")
