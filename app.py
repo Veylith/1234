@@ -3,6 +3,21 @@ DeepScan AI — Hugging Face Space Application
 Combines native Gradio 5 UI with full FastAPI REST Backend & ZeroGPU acceleration.
 """
 
+# Import spaces at the top level for Hugging Face ZeroGPU
+try:
+    import spaces
+    _HAS_SPACES = True
+except ImportError:
+    _HAS_SPACES = False
+    class spaces:
+        @staticmethod
+        def GPU(func=None, duration=60):
+            def decorator(f):
+                return f
+            if func is not None and callable(func):
+                return func
+            return decorator
+
 import os
 import sys
 import time
@@ -24,22 +39,6 @@ if BACKEND_DIR not in sys.path:
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
-# Hugging Face ZeroGPU safe compatibility
-try:
-    import spaces
-    _HAS_SPACES = True
-    logger.info("✓ Hugging Face Spaces ZeroGPU module detected.")
-except ImportError:
-    _HAS_SPACES = False
-    class spaces:
-        @staticmethod
-        def GPU(func=None, duration=60):
-            def decorator(f):
-                return f
-            if func is not None and callable(func):
-                return func
-            return decorator
-
 import gradio as gr
 from fastapi.staticfiles import StaticFiles
 
@@ -53,14 +52,16 @@ from backend.main import (
     get_video_detector,
 )
 
-# Mount the static frontend at /web so users can access the full Cyberpunk dashboard
-frontend_dir = ROOT_DIR
-fastapi_app.mount("/web", StaticFiles(directory=frontend_dir, html=True), name="web_frontend")
-
 
 # ─────────────────────────────────────────────────────────────
 # Core Inference Functions (Accelerated with ZeroGPU)
 # ─────────────────────────────────────────────────────────────
+
+@spaces.GPU
+def _zerogpu_probe():
+    """Startup probe for ZeroGPU initialization."""
+    return True
+
 
 @spaces.GPU
 def analyze_image_gradio(input_img):
@@ -162,7 +163,6 @@ def analyze_audio_gradio(audio_file):
 
     try:
         audio_detector = get_audio_detector()
-        # audio_file can be filepath string or (sample_rate, numpy_array)
         if isinstance(audio_file, tuple):
             sr, y = audio_file
             res = audio_detector.analyze_array(y, sr)
@@ -238,18 +238,6 @@ body, .gradio-container {
     display: flex;
     justify-content: center;
     gap: 16px;
-}
-.nav-btn {
-    display: inline-block;
-    padding: 6px 14px;
-    border-radius: 8px;
-    font-size: 0.88rem;
-    font-weight: 600;
-    text-decoration: none;
-    background: rgba(56, 189, 248, 0.1);
-    color: #38bdf8 ! grad;
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    transition: all 0.2s;
 }
 """
 
@@ -370,9 +358,9 @@ Evaluated across **N = 10,000 multimodal samples** (FaceForensics++, DFDC, Celeb
     </div>
     """)
 
-# Mount the FastAPI app routes directly onto Gradio's internal FastAPI app
-app = gr.mount_gradio_app(fastapi_app, demo, path="/")
+# Include all FastAPI routes into demo.app so /api/... and /docs endpoints are live
+demo.app.mount("/web", StaticFiles(directory=ROOT_DIR, html=True), name="web_frontend")
+demo.app.include_router(fastapi_app.router)
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=7860)
+# Launch using standard Gradio launch (required for ZeroGPU hook)
+demo.launch(server_name="0.0.0.0", server_port=7860)
