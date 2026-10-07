@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DeepScan AI — State-of-the-art multimodal deepfake & presentation attack detection platform.">
+  <title>DeepScan AI — Multimodal Deepfake & Biometric Detection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/index.css?v=30">
+  <link rel="icon" type="image/png" href="assets/deepscan-logo.png">
+</head>
+<body>
+
+<!-- ══════════ FLOATING PILL NAVBAR (AGENTICX STYLE) ══════════ -->
+<header class="floating-header">
+  <nav class="pill-nav" aria-label="Main Navigation">
+    <a href="#about" class="pill-brand" id="brandPillLink">
+      <img src="assets/deepscan-logo.png" alt="DeepScan AI Logo" class="brand-logo-img">
+      <span>DeepScan AI</span>
+    </a>
+
+    <ul class="pill-links">
+      <li><button class="pill-link active" id="pillLinkAbout">About</button></li>
+      <li><button class="pill-link" id="pillLinkEngine">Engine</button></li>
+      <li><button class="pill-link" id="pillLinkModalities">Modalities</button></li>
+      <li><button class="pill-link" id="pillLinkDashboard">Dashboard</button></li>
+    </ul>
+
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <button class="pill-theme-btn" id="floatingThemeBtn" title="Toggle Light/Dark Theme">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+
+      <button class="pill-btn-primary" id="floatingGetStartedBtn">
+        Get Started
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- ══════════════════════════════════════════════════════════════
+     ABOUT LANDING PAGE VIEW
+     ══════════════════════════════════════════════════════════════ -->
+<section id="aboutSection" class="about-view">
+
+  <!-- ── 1. Split Hero Section ── -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <div class="hero-brand-badge">
+        <img src="assets/deepscan-logo.png" alt="DeepScan AI Logo" class="hero-badge-img">
+        <span>DeepScan AI · Autonomous Biometric Forensics</span>
+      </div>
+      <h1 class="hero-brand-title">DeepScan AI</h1>
+      <p class="hero-subtext">
+        An AI-powered multimodal execution platform engineered to detect deepfakes, inspect generative artifacts, and prevent presentation replay attacks with minimal manual effort.
+      </p>
+
+      <div class="hero-divider"></div>
+
+      <div class="hero-actions">
+        <button class="btn-hero-primary" id="heroGetStartedBtn">
+          Get Started
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <button class="btn-hero-secondary" id="heroExploreBtn">
+          Explore Engine
+        </button>
+      </div>
+
+      <div class="hero-pill-badges">
+        <span class="hero-pill-badge">✦ Vision Transformer</span>
+        <span class="hero-pill-badge">✦ AASIST Voice Audio</span>
+        <span class="hero-pill-badge">✦ Neural Live PAD</span>
+        <span class="hero-pill-badge">✦ 100% On-Device</span>
+      </div>
+    </div>
+
+    <!-- ── Right Column: Digital Pixel Matrix Face Card ── -->
+    <div class="hero-visual-card">
+      <img src="assets/forensic-face-matrix.jpg" alt="DeepScan AI Biometric Matrix Portrait" class="hero-matrix-img">
+      <div class="hero-scan-beam"></div>
+
+      <div class="visual-hud-overlay">
+        <div class="hud-top-row">
+          <div class="hud-chip">
+            <span class="hud-dot"></span>
+            <span>BIOMETRIC MATRIX · ACTIVE</span>
+          </div>
+          <div class="hud-crosshair"></div>
+        </div>
+
+        <div class="hud-bottom-row">
+          <div class="hud-meta-text">
+            <div>MESH: MULTI-SCALE ViT-B/16</div>
+            <div>VERIFICATION: ZERO-TRUST</div>
+          </div>
+          <div class="hud-crosshair"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2. Detection Engine Section (Matching "Workflow Engine" in Reference) ── -->
+  <div class="engine-section" id="engineSection">
+    <div class="engine-header">
+      <div class="section-label">Workflow Engine</div>
+      <h2 class="engine-title">Workflow Engine</h2>
+      <p class="engine-desc">
+        DeepScan AI is an intelligent AI platform designed to take over repetitive and time-consuming tasks. From organizing multi-modal biometric media to verifying live presentation streams, it works like a digital forensic teammate that helps you stay focused on what matters.
+      </p>
+    </div>
+
+    <!-- Biometric Frequency Spectrum / Waveform Visual (Matching Reference Waveform Bars) -->
+    <div class="waveform-container" id="engineWaveformBars">
+      <div class="waveform-overlay-tag">
+        <span>✦ MULTI-BAND SPECTRAL DECOMPOSITION · FOURIER 1/f SPECTRUM & AASIST ENERGETICS</span>
+      </div>
+      <!-- Waveform bars generated dynamically via CSS rhythmic heights -->
+      <div class="waveform-bar" style="height: 38%;"></div>
+      <div class="waveform-bar" style="height: 52%;"></div>
+      <div class="waveform-bar" style="height: 74%;"></div>
+      <div class="waveform-bar" style="height: 44%;"></div>
+      <div class="waveform-bar" style="height: 88%;"></div>
+      <div class="waveform-bar" style="height: 60%;"></div>
+      <div class="waveform-bar" style="height: 94%;"></div>
+      <div class="waveform-bar" style="height: 70%;"></div>
+      <div class="waveform-bar" style="height: 48%;"></div>
+      <div class="waveform-bar" style="height: 82%;"></div>
+      <div class="waveform-bar" style="height: 65%;"></div>
+      <div class="waveform-bar" style="height: 90%;"></div>
+      <div class="waveform-bar" style="height: 100%;"></div>
+      <div class="waveform-bar" style="height: 85%;"></div>
+      <div class="waveform-bar" style="height: 55%;"></div>
+      <div class="waveform-bar" style="height: 78%;"></div>
+      <div class="waveform-bar" style="height: 92%;"></div>
+      <div class="waveform-bar" style="height: 68%;"></div>
+      <div class="waveform-bar" style="height: 84%;"></div>
+      <div class="waveform-bar" style="height: 40%;"></div>
+      <div class="waveform-bar" style="height: 76%;"></div>
+      <div class="waveform-bar" style="height: 95%;"></div>
+      <div class="waveform-bar" style="height: 62%;"></div>
+      <div class="waveform-bar" style="height: 88%;"></div>
+      <div class="waveform-bar" style="height: 50%;"></div>
+      <div class="waveform-bar" style="height: 72%;"></div>
+      <div class="waveform-bar" style="height: 91%;"></div>
+      <div class="waveform-bar" style="height: 58%;"></div>
+      <div class="waveform-bar" style="height: 80%;"></div>
+      <div class="waveform-bar" style="height: 42%;"></div>
+      <div class="waveform-bar" style="height: 66%;"></div>
+      <div class="waveform-bar" style="height: 86%;"></div>
+      <div class="waveform-bar" style="height: 48%;"></div>
+      <div class="waveform-bar" style="height: 74%;"></div>
+      <div class="waveform-bar" style="height: 92%;"></div>
+      <div class="waveform-bar" style="height: 60%;"></div>
+      <div class="waveform-bar" style="height: 82%;"></div>
+      <div class="waveform-bar" style="height: 45%;"></div>
+      <div class="waveform-bar" style="height: 70%;"></div>
+      <div class="waveform-bar" style="height: 88%;"></div>
+      <div class="waveform-bar" style="height: 54%;"></div>
+      <div class="waveform-bar" style="height: 78%;"></div>
+      <div class="waveform-bar" style="height: 96%;"></div>
+      <div class="waveform-bar" style="height: 64%;"></div>
+      <div class="waveform-bar" style="height: 84%;"></div>
+      <div class="waveform-bar" style="height: 50%;"></div>
+      <div class="waveform-bar" style="height: 72%;"></div>
+      <div class="waveform-bar" style="height: 90%;"></div>
+    </div>
+  </div>
+
+  <!-- ── 3. Four Core Detection Modalities ── -->
+  <div class="modalities-section" id="modalitiesSection">
+    <div class="engine-header">
+      <div class="section-label">Detection Modalities</div>
+      <h2 class="engine-title">Four Layers of Forensic Inspection</h2>
+      <p class="engine-desc">
+        Comprehensive deepfake security across visual, temporal, auditory, and real-time biometric attack vectors.
+      </p>
+    </div>
+
+    <div class="modalities-grid">
+      <!-- 1. Image Scan -->
+      <div class="modality-card">
+        <div class="modality-card-top">
+          <div class="modality-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <div class="modality-num">01 / MODALITY</div>
+          <h3 class="modality-title">Image Scan</h3>
+          <p class="modality-desc">
+            Vision Transformer (ViT-B/16) combined with Error Level Analysis (ELA) and high-frequency noise residual tracking.
+          </p>
+        </div>
+        <div class="modality-footer">
+          <button class="btn-launch-modality" data-launch="image">
+            Launch Image Scan
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <span class="modality-tag">ViT-B/16</span>
+        </div>
+      </div>
+
+      <!-- 2. Video Scan -->
+      <div class="modality-card">
+        <div class="modality-card-top">
+          <div class="modality-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          </div>
+          <div class="modality-num">02 / MODALITY</div>
+          <h3 class="modality-title">Video Scan</h3>
+          <p class="modality-desc">
+            Temporal inter-frame tracking with MTCNN, boundary jitter detection, optical flow discrepancy, and artifact heatmaps.
+          </p>
+        </div>
+        <div class="modality-footer">
+          <button class="btn-launch-modality" data-launch="video">
+            Launch Video Scan
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <span class="modality-tag">MTCNN Temporal</span>
+        </div>
+      </div>
+
+      <!-- 3. Audio Scan -->
+      <div class="modality-card">
+        <div class="modality-card-top">
+          <div class="modality-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </div>
+          <div class="modality-num">03 / MODALITY</div>
+          <h3 class="modality-title">Audio Scan</h3>
+          <p class="modality-desc">
+            State-of-the-art AASIST graph neural network detecting AI voice clones, text-to-speech vocoders, and spectral flatness.
+          </p>
+        </div>
+        <div class="modality-footer">
+          <button class="btn-launch-modality" data-launch="audio">
+            Launch Audio Scan
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <span class="modality-tag">AASIST Model</span>
+        </div>
+      </div>
+
+      <!-- 4. Live Webcam -->
+      <div class="modality-card">
+        <div class="modality-card-top">
+          <div class="modality-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <div class="modality-num">04 / MODALITY</div>
+          <h3 class="modality-title">Live Webcam PAD</h3>
+          <p class="modality-desc">
+            Neural presentation attack defense (ViT-PAD) with SSDLite physical device detection, OLED PenTile subpixel analysis, and bezel detection.
+          </p>
+        </div>
+        <div class="modality-footer">
+          <button class="btn-launch-modality" data-launch="webcam">
+            Launch Live Webcam
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <span class="modality-tag">SSDLite + ViT</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 4. Call to Action Banner ── -->
+  <div class="about-cta-section">
+    <div class="cta-banner-card">
+      <div class="cta-banner-content">
+        <h2>Start Detecting Digital Media Authenticity Today</h2>
+        <p>
+          Experience zero-trust multi-modal forensic inspection directly in your browser. 100% on-device local execution ensures complete privacy with no external cloud streaming.
+        </p>
+      </div>
+      <button class="btn-cta-light" id="ctaGetStartedBtn">
+        Open Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- ── 5. About Page Footer ── -->
+  <footer class="about-footer">
+    <div>© 2026 DeepScan AI · Engineered for Advanced Biometric Security</div>
+    <div>100% Local Inference · Zero Cloud Storage</div>
+  </footer>
+
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     DASHBOARD VIEW (FULL FEATURE FIDELITY WITH REFINED AGENTICX LOOK)
+     ══════════════════════════════════════════════════════════════ -->
+<div id="dashboardSection" class="dashboard-view" style="display:none">
+  <!-- Subtle CRT Robot Character Ambient Background -->
+  <div class="dashboard-bg-overlay"></div>
+
+  <div class="layout">
+    
+    <!-- ══════════ SIDEBAR ══════════ -->
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="assets/deepscan-logo.png" alt="DeepScan AI Logo" class="brand-logo-img">
+        <span>DeepScan AI</span>
+      </div>
+
+      <button class="sidebar-overview-btn" id="navBackToAbout">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        ← About Overview
+      </button>
+
+      <div class="nav-section">
+        <div class="nav-label">DETECTION MODES</div>
+        <button class="nav-item active" data-tab="image" id="navImage">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Image Scan
+        </button>
+        <button class="nav-item" data-tab="video" id="navVideo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          Video Scan
+        </button>
+        <button class="nav-item" data-tab="audio" id="navAudio">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          Audio Scan
+        </button>
+        <button class="nav-item" data-tab="webcam" id="navWebcam">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          Live Webcam
+        </button>
+      </div>
+    </aside>
+
+    <!-- ══════════ MAIN DASHBOARD CONTENT ══════════ -->
+    <main class="main-content">
+      
+      <!-- Dashboard Top Header -->
+      <header class="top-header">
+        <div class="page-title-group">
+          <h1>Detection Dashboard</h1>
+          <p>Analyze, verify, and authenticate digital media with multimodal AI.</p>
+        </div>
+        <div class="header-actions">
+          <button class="header-action-btn" id="headerAboutBtn">
+            ✦ Platform Overview
+          </button>
+          <button class="header-action-btn" id="themeToggleBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            Theme
+          </button>
+        </div>
+      </header>
+
+      <!-- 4 Top Metric Cards -->
+      <div class="metrics-grid">
+        <!-- Primary Card (Obsidian Dark) -->
+        <div class="metric-card card-dark">
+          <div class="metric-header">
+            <span class="metric-title">Overall Fake Prob.</span>
+            <div class="arrow-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+          <div class="metric-value" id="cardAiScore">--</div>
+          <div class="metric-trend">
+            <span class="trend-icon" id="trendIconProb">↑</span> <span id="cardVerdictText">Awaiting Media</span>
+          </div>
+        </div>
+
+        <!-- Secondary Card 1: Faces Detected -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-title">Faces Detected</span>
+            <div class="arrow-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+          <div class="metric-value" id="cardFaces">--</div>
+          <div class="metric-trend">
+            <span class="trend-icon green">↑</span> MTCNN Algorithm
+          </div>
+        </div>
+
+        <!-- Secondary Card 2: Active AI Model -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-title">Active AI Model</span>
+            <div class="arrow-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+          <div class="metric-value" id="cardEffNet" style="font-size: 22px; padding-top: 6px;">--</div>
+          <div class="metric-trend">
+            <span class="trend-icon green">↑</span> Auto-selected
+          </div>
+        </div>
+
+        <!-- Secondary Card 3: Classical CV -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-title">Classical CV</span>
+            <div class="arrow-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+          <div class="metric-value" id="cardClassical">--</div>
+          <div class="metric-trend">
+            <span class="trend-icon green">↑</span> Error Level Analysis
+          </div>
+        </div>
+      </div>
+
+      <!-- Middle Row: Preview & Signals -->
+      <div class="middle-grid">
+        <!-- Media Analytics -->
+        <div class="dashboard-card preview-card">
+          <div class="card-title">
+            Media Analytics
+            <button class="btn-new" id="mediaResetBtn" style="display:none">+ Reset</button>
+          </div>
+          
+          <!-- Image Mode -->
+          <div class="upload-container" id="imageUploadContainer">
+            <div class="drop-zone" id="imageDropZone">
+              <input type="file" id="imageFileInput" accept="image/*" hidden>
+              <div class="drop-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              </div>
+              <h3>Drop Image Here</h3>
+              <p>JPG, PNG, WEBP</p>
+            </div>
+            <div class="preview-zone" id="imagePreviewZone" style="display:none">
+              <div class="preview-inner" id="imagePreviewInner">
+                <img id="imagePreviewImg" draggable="false" alt="Image Preview">
+                <canvas id="imageFaceCanvas" class="face-overlay"></canvas>
+                <div class="scan-sweep" id="imageScanSweep"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Video Mode -->
+          <div class="upload-container" id="videoUploadContainer" style="display:none">
+            <div class="drop-zone" id="videoDropZone">
+              <input type="file" id="videoFileInput" accept="video/*" hidden>
+              <div class="drop-icon">
+                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="M17 9l5-3v12l-5-3V9z"/></svg>
+              </div>
+              <h3>Drop Video Here</h3>
+              <p>MP4, MOV, AVI</p>
+            </div>
+            <div class="preview-zone" id="videoPreviewZone" style="display:none">
+              <div class="preview-inner">
+                <video id="videoPreviewEl" controls muted playsinline></video>
+                <div class="video-analyzing-overlay" id="videoOverlay" style="display:none">
+                  <div class="video-overlay-spinner"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Audio Mode -->
+          <div class="upload-container" id="audioUploadContainer" style="display:none">
+            <div class="drop-zone" id="audioDropZone">
+              <input type="file" id="audioFileInput" accept="audio/*,.wav,.mp3,.flac,.ogg,.m4a" hidden>
+              <div class="drop-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              </div>
+              <h3>Drop Audio Here</h3>
+              <p>WAV, MP3, FLAC, OGG, M4A</p>
+            </div>
+            <div class="audio-preview-zone" id="audioPreviewZone" style="display:none">
+              <div class="audio-preview-inner">
+                <canvas id="audioWaveform" class="audio-waveform-canvas"></canvas>
+                <audio id="audioPlayer" controls></audio>
+                <div class="audio-status-row">
+                  <span class="audio-status-chip" id="audioStatusChip">Ready</span>
+                  <button class="btn-new" id="audioReset" style="display:none">+ New Audio</button>
+                </div>
+              </div>
+              <div class="audio-stat-cards" id="audioStatCards" style="display:none">
+                <div class="audio-stat-card">
+                  <div class="audio-stat-label">AASIST Score</div>
+                  <div class="audio-stat-value" id="acScore">—</div>
+                  <div class="audio-stat-badge" id="acBadge"></div>
+                </div>
+                <div class="audio-stat-card">
+                  <div class="audio-stat-label">Spectral Flatness</div>
+                  <div class="audio-stat-value" id="acFlatness">—</div>
+                </div>
+                <div class="audio-stat-card">
+                  <div class="audio-stat-label">Pitch Variability</div>
+                  <div class="audio-stat-value" id="acPitch">—</div>
+                </div>
+                <div class="audio-stat-card">
+                  <div class="audio-stat-label">Duration</div>
+                  <div class="audio-stat-value" id="acDuration">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Webcam Mode — Direct Real-Time Live Detection -->
+          <div class="upload-container" id="webcamContainer" style="display:none">
+            <div class="webcam-panel">
+              <div class="webcam-feed-wrapper">
+                <video id="webcamVideo" autoplay muted playsinline></video>
+                <canvas id="webcamOverlay" class="webcam-overlay-canvas"></canvas>
+                
+                <!-- Real-time Live Status Badge -->
+                <div class="webcam-status-badge" id="webcamStatusBadge">
+                  <span class="webcam-dot"></span> Camera Ready
+                </div>
+
+                <!-- Alert Banner -->
+                <div class="wc-alert-banner" id="wcAlertBanner" style="display:none">
+                  <span class="wc-alert-icon">⚠️</span>
+                  <span class="wc-alert-text" id="wcAlertText">Screen Replay / Device Detected</span>
+                </div>
+              </div>
+
+              <!-- Real-time Telemetry: 3 Live Cards -->
+              <div class="wc-monitor-stats" id="wcMonitorStats">
+                <div class="wc-stat-card">
+                  <div class="wc-stat-icon">👁️</div>
+                  <div class="wc-stat-body">
+                    <div class="wc-stat-label">Eye Dynamics</div>
+                    <div class="wc-stat-value" id="wcMonBlinks">--</div>
+                    <div class="wc-stat-sub" id="wcMonBlinkState">Awaiting live feed</div>
+                  </div>
+                </div>
+                <div class="wc-stat-card">
+                  <div class="wc-stat-icon">🔄</div>
+                  <div class="wc-stat-body">
+                    <div class="wc-stat-label">3D Head Pose</div>
+                    <div class="wc-stat-value" id="wcMonPose">--</div>
+                    <div class="wc-stat-sub" id="wcMonPoseAngles">Awaiting live feed</div>
+                  </div>
+                </div>
+                <div class="wc-stat-card">
+                  <div class="wc-stat-icon">🛡️</div>
+                  <div class="wc-stat-body">
+                    <div class="wc-stat-label">Anti-Spoofing & Liveness</div>
+                    <div class="wc-stat-value" id="wcMonLiveness">--</div>
+                    <div class="wc-stat-sub" id="wcMonLivenessLabel">Awaiting live feed</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Controls: Start / Stop -->
+              <div class="wc-monitor-controls">
+                <div class="webcam-tier-chip" id="wcMonTierChip" style="display:none">
+                  <span class="tier-dot tier-1"></span> Tier 1: Authentic
+                </div>
+                <button class="webcam-btn webcam-start" id="webcamStartBtn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
+                  Start Live Detection
+                </button>
+                <button class="webcam-btn webcam-stop" id="wcStopBtn" style="display:none">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg>
+                  Stop Live Detection
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Justification Box -->
+        <div class="dashboard-card signals-card">
+          <div class="card-title">Verdict Justification</div>
+          <div class="justification-box" id="justificationBox">
+            <strong>Why this verdict?</strong>
+            <p id="justificationText">Upload media to see the model's reasoning here.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Row: Gauge & Timeline -->
+      <div class="bottom-grid">
+        <!-- Authenticity Gauge -->
+        <div class="dashboard-card gauge-card">
+          <div class="card-title">Authenticity Progress</div>
+          <div class="gauge-wrap">
+            <canvas id="verdictGauge" width="280" height="140"></canvas>
+            <div class="gauge-center">
+              <h2 id="gaugeScoreText">--</h2>
+              <p id="gaugeLabelText">Score</p>
+            </div>
+          </div>
+          <div class="gauge-legend">
+            <span class="legend-item"><span class="dot safe"></span> Real</span>
+            <span class="legend-item"><span class="dot warn"></span> Uncertain</span>
+            <span class="legend-item"><span class="dot danger"></span> Fake</span>
+          </div>
+        </div>
+
+        <!-- Model Confidence -->
+        <div class="dashboard-card dark-tracker-card" id="timelineCardWrapper">
+          <div class="card-title">Model Confidence</div>
+          <div class="confidence-section" id="imageConfidenceSection">
+            <div class="conf-label-row">
+              <span>Real</span>
+              <span>Fake</span>
+            </div>
+            <div class="confidence-track">
+              <div class="confidence-fill" id="rpConfFill"></div>
+              <div class="confidence-thumb" id="rpConfThumb"></div>
+            </div>
+            <div class="conf-marker-row">
+              <span>0%</span>
+              <span class="conf-threshold">35%</span>
+              <span class="conf-threshold">65%</span>
+              <span>100%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ══════════ SCRIPTS ══════════ -->
+<script src="scripts/app.js?v=33"></script>
+<script src="scripts/image-detector.js?v=33"></script>
+<script src="scripts/video-detector.js?v=33"></script>
+<script src="scripts/audio-detector.js?v=33"></script>
+<script src="scripts/webcam-detector.js?v=33"></script>
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DeepScan AI — Live Face-Stitching Simulation. Educational demo showing how real-time deepfake face swapping works during video calls.">
+  <title>DeepScan AI — Live Face-Stitching Simulation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/face-stitch.css">
+  <link rel="icon" type="image/png" href="assets/deepscan-logo.png">
+</head>
+<body class="fs-page" data-theme="dark">
+
+<!-- Animated Background -->
+<div class="fs-bg-grid"></div>
+<div class="fs-bg-radial"></div>
+
+<!-- ═══════ WARNING BANNER ═══════ -->
+<div class="fs-warning-banner">
+  <span class="warn-icon">⚠️</span>
+  <span>
+    <strong>Educational Simulation Only.</strong>
+    This is a safe, browser-based visual demonstration of real-time face-stitching mechanics.
+    No models are downloaded; no video or biometric data leaves your machine. Inspired by
+    <a href="https://github.com/hacksider/Deep-Live-Cam" target="_blank" rel="noopener" style="color: #ffcc88; text-decoration: underline;">Deep-Live-Cam</a>.
+  </span>
+</div>
+
+<!-- ═══════ TOP NAVIGATION ═══════ -->
+<nav class="fs-topnav">
+  <div class="fs-topnav-left">
+    <button class="fs-back-btn" onclick="goBackToMain()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back to DeepScan
+    </button>
+    <div class="fs-topnav-title">
+      <img src="assets/deepscan-logo.png" alt="DeepScan AI Logo">
+      <h1>Live Face-Stitching Lab</h1>
+      <span class="fs-badge">🔬 SIMULATION</span>
+    </div>
+  </div>
+  <div class="fs-topnav-right">
+    <div class="fs-tracker-indicator" id="fsTrackerIndicator" title="Active face tracking engine">
+      <span class="tracker-dot"></span>
+      <span id="fsTrackerName">Universal Tracker</span>
+    </div>
+    <button id="fsThemeBtn" title="Toggle Theme">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+      Theme
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════ MAIN CONTENT ═══════ -->
+<main class="fs-main">
+
+  <!-- Section Header -->
+  <div class="fs-section-header">
+    <span class="fs-section-label">✦ REAL-TIME IDENTITY MORPH SIMULATOR</span>
+    <h2>Live Video Call Face-Stitching</h2>
+    <p>
+      Select a target persona or upload any portrait photo, start your video feed, and witness how
+      attackers overlay another identity in real-time during live video calls.
+      Runs 100% locally in your browser.
+    </p>
+  </div>
+
+  <!-- ═══════ PERSONA SELECTION ═══════ -->
+  <div class="fs-persona-selection-header">
+    <span class="fs-selection-title">1. Choose Persona to Stitch</span>
+    <span class="fs-selection-subtitle">Select a preset or upload any custom photo</span>
+  </div>
+
+  <div class="fs-persona-grid">
+    <!-- Persona 1: Tech CEO -->
+    <div class="persona-card active" data-persona="tech_ceo" id="card_tech_ceo">
+      <img src="assets/persona_tech_ceo.jpg" alt="Alex Chen — Tech CEO" class="persona-card-img" loading="lazy">
+      <div class="persona-card-info">
+        <div class="persona-card-name">Alex Chen</div>
+        <div class="persona-card-role">Tech CEO</div>
+      </div>
+    </div>
+
+    <!-- Persona 2: News Anchor -->
+    <div class="persona-card" data-persona="news_anchor" id="card_news_anchor">
+      <img src="assets/persona_news_anchor.jpg" alt="Priya Sharma — News Anchor" class="persona-card-img" loading="lazy">
+      <div class="persona-card-info">
+        <div class="persona-card-name">Priya Sharma</div>
+        <div class="persona-card-role">News Anchor</div>
+      </div>
+    </div>
+
+    <!-- Persona 3: Professor -->
+    <div class="persona-card" data-persona="professor" id="card_professor">
+      <img src="assets/persona_professor.jpg" alt="Dr. James Ward — Professor" class="persona-card-img" loading="lazy">
+      <div class="persona-card-info">
+        <div class="persona-card-name">Dr. James Ward</div>
+        <div class="persona-card-role">Academic Dean</div>
+      </div>
+    </div>
+
+    <!-- Persona 4: Athlete -->
+    <div class="persona-card" data-persona="athlete" id="card_athlete">
+      <img src="assets/persona_athlete.jpg" alt="Maya Torres — Athlete" class="persona-card-img" loading="lazy">
+      <div class="persona-card-info">
+        <div class="persona-card-name">Maya Torres</div>
+        <div class="persona-card-role">Pro Athlete</div>
+      </div>
+    </div>
+
+    <!-- Persona 5: Custom Upload -->
+    <div class="persona-card persona-upload-card" id="card_custom">
+      <input type="file" id="fsCustomInput" accept="image/*" style="display: none;">
+      <div class="persona-upload-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+      <div class="persona-card-info">
+        <div class="persona-card-name" id="fsCustomName">+ Custom Photo</div>
+        <div class="persona-card-role">Upload Any Face</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SIMULATION WORKSPACE ═══════ -->
+  <div class="fs-workspace">
+
+    <!-- Left: Live Preview -->
+    <div class="fs-preview-card">
+      <div class="fs-preview-header">
+        <div class="fs-preview-header-left">
+          <span class="fs-preview-title">Live Stitch Preview</span>
+          <span class="fs-status-badge fs-status-ready" id="fsStatusBadge">
+            <span id="fsStatusText">Ready — Tech CEO Selected</span>
+          </span>
+        </div>
+        <div class="fs-preview-header-right">
+          <!-- Video Source Selector -->
+          <div class="fs-source-selector">
+            <button class="fs-source-btn active" id="fsSourceWebcam" title="Use your physical webcam">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+              Live Camera
+            </button>
+            <button class="fs-source-btn" id="fsSourceDemo" title="Use synthetic animated subject (no camera needed)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+              Demo Feed
+            </button>
+          </div>
+          <span class="fs-fps-display" id="fsFpsDisplay">-- FPS</span>
+        </div>
+      </div>
+
+      <div class="fs-video-container" id="fsVideoContainer">
+        <video id="fsWebcamVideo" autoplay muted playsinline></video>
+        <canvas id="fsOutputCanvas"></canvas>
+        <div class="fs-scan-line"></div>
+
+        <!-- Placeholder shown before starting -->
+        <div class="fs-placeholder" id="fsPlaceholder">
+          <div class="fs-placeholder-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+          </div>
+          <h3>Live Face-Stitching Simulation</h3>
+          <p id="fsPlaceholderDesc">Select a persona above, then click <strong>"Start Simulation"</strong> to begin real-time face swapping.</p>
+          <div class="fs-placeholder-badges">
+            <span class="ph-badge">🔒 100% Client-Side</span>
+            <span class="ph-badge">⚡ Real-Time 30+ FPS</span>
+            <span class="ph-badge">🛡️ Zero Data Upload</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls Bar -->
+      <div class="fs-controls-bar">
+        <button class="fs-btn fs-btn-start" id="fsStartBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
+          Start Simulation
+        </button>
+        <button class="fs-btn fs-btn-stop" id="fsStopBtn" style="display: none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg>
+          Stop Simulation
+        </button>
+
+        <div class="fs-control-group">
+          <span class="fs-control-label">Blend:</span>
+          <input type="range" class="fs-slider" id="fsIntensitySlider" min="0" max="1" step="0.05" value="0.85">
+          <span class="fs-slider-value" id="fsIntensityValue">85%</span>
+        </div>
+
+        <div class="fs-toggles-group">
+          <label class="fs-checkbox-toggle" title="Show face bounding box, eyes, nose, and mouth anchors">
+            <input type="checkbox" id="fsDebugToggle">
+            <span>Landmarks</span>
+          </label>
+
+          <label class="fs-checkbox-toggle" title="Split the screen in half to compare real camera vs face-stitched video">
+            <input type="checkbox" id="fsSplitToggle">
+            <span>Split View</span>
+          </label>
+
+          <label class="fs-checkbox-toggle" title="Forensic view: highlights the feathering seam boundary">
+            <input type="checkbox" id="fsSeamToggle">
+            <span>Seam Heatmap</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Pipeline & Forensics -->
+    <div class="fs-right-panel">
+
+      <!-- Pipeline Visualization -->
+      <div class="fs-panel-card">
+        <div class="fs-panel-title">
+          <span class="icon">⚡</span> Real-Time Stitching Pipeline
+        </div>
+
+        <div class="pipeline-step" id="pipelineStep0">
+          <div class="pipeline-step-num">1</div>
+          <div>
+            <div class="pipeline-step-label">Camera Frame Capture</div>
+            <div class="pipeline-step-desc">getUserMedia → 640×480 @ 30 FPS</div>
+          </div>
+        </div>
+        <div class="pipeline-connector"></div>
+
+        <div class="pipeline-step" id="pipelineStep1">
+          <div class="pipeline-step-num">2</div>
+          <div>
+            <div class="pipeline-step-label">Face Detection & Tracking</div>
+            <div class="pipeline-step-desc">FaceDetector / Adaptive Skin Centroid</div>
+          </div>
+        </div>
+        <div class="pipeline-connector"></div>
+
+        <div class="pipeline-step" id="pipelineStep2">
+          <div class="pipeline-step-num">3</div>
+          <div>
+            <div class="pipeline-step-label">Landmark Extraction</div>
+            <div class="pipeline-step-desc">Pupils · Inter-ocular distance · Angle</div>
+          </div>
+        </div>
+        <div class="pipeline-connector"></div>
+
+        <div class="pipeline-step" id="pipelineStep3">
+          <div class="pipeline-step-num">4</div>
+          <div>
+            <div class="pipeline-step-label">Affine Alignment & Scale</div>
+            <div class="pipeline-step-desc">2D Rotation + Perspective Warping</div>
+          </div>
+        </div>
+        <div class="pipeline-connector"></div>
+
+        <div class="pipeline-step" id="pipelineStep4">
+          <div class="pipeline-step-num">5</div>
+          <div>
+            <div class="pipeline-step-label">Poisson Mask & Compositing</div>
+            <div class="pipeline-step-desc">Radial feathering + Color tone transfer</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deep-Live-Cam Architecture Comparison -->
+      <div class="fs-panel-card">
+        <div class="fs-panel-title">
+          <span class="icon">📋</span> Deep-Live-Cam vs This Simulation
+        </div>
+        <ul class="fs-info-list">
+          <li>
+            <span class="info-icon">🧠</span>
+            <div>
+              <strong>Deep-Live-Cam:</strong> Uses <code>insightface</code> (ArcFace 512D) for identity embedding.
+              <div class="info-sub"><strong>Here:</strong> Browser FaceDetector + anthropometric geometric ratios.</div>
+            </div>
+          </li>
+          <li>
+            <span class="info-icon">🔄</span>
+            <div>
+              <strong>Deep-Live-Cam:</strong> <code>inswapper_128.onnx</code> neural network synthesizes new face pixels.
+              <div class="info-sub"><strong>Here:</strong> Canvas affine transformation with real-time pose tracking.</div>
+            </div>
+          </li>
+          <li>
+            <span class="info-icon">🎨</span>
+            <div>
+              <strong>Deep-Live-Cam:</strong> <code>cv2.seamlessClone</code> (Poisson differential equation solver).
+              <div class="info-sub"><strong>Here:</strong> Multi-stop radial alpha feathering with tone harmonization.</div>
+            </div>
+          </li>
+          <li>
+            <span class="info-icon">📹</span>
+            <div>
+              <strong>Deep-Live-Cam:</strong> Streams output into <code>OBS Virtual Camera</code> / Zoom / Teams.
+              <div class="info-sub"><strong>Here:</strong> Live HTML5 Canvas display with forensic telemetry.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ EDUCATIONAL SECTION ═══════ -->
+  <div class="fs-education-section">
+    <div class="fs-section-header">
+      <span class="fs-section-label">✦ THREAT INTELLIGENCE</span>
+      <h2>Why Live Video Call Fakes are Dangerous</h2>
+      <p>
+        Single-shot identity morphing allows anyone with 1 photograph to appear as that person in live Zoom,
+        Teams, WhatsApp, or Google Meet calls. DeepScan AI was built to detect and neutralize this attack vector.
+      </p>
+    </div>
+
+    <div class="fs-edu-grid">
+      <div class="fs-edu-card">
+        <div class="fs-edu-icon red">🎭</div>
+        <h3>Zero-Enrollment Attack</h3>
+        <p>
+          Unlike traditional deepfakes requiring hundreds of training images, tools like Deep-Live-Cam only
+          require a <strong>single 2D portrait photo</strong> scraped from LinkedIn, Instagram, or corporate websites
+          to execute a live swap.
+        </p>
+      </div>
+
+      <div class="fs-edu-card">
+        <div class="fs-edu-icon green">⚡</div>
+        <h3>Ultra-Low Latency</h3>
+        <p>
+          By leveraging ONNX Runtime with DirectML, CUDA, or CoreML, modern swap pipelines generate swapped frames
+          in <strong>&lt; 33 milliseconds</strong> (30+ FPS), completely imperceptible on standard video conferencing compression.
+        </p>
+      </div>
+
+      <div class="fs-edu-card">
+        <div class="fs-edu-icon purple">🛡️</div>
+        <h3>DeepScan Countermeasures</h3>
+        <p>
+          DeepScan AI counters this with multi-layer Presentation Attack Detection (PAD):
+          temporal boundary seam variance, eye-blink desync, frequency domain moiré analysis, and Vision Transformer inspection.
+        </p>
+      </div>
+    </div>
+
+    <!-- Technical Pipeline Diagram -->
+    <div class="fs-pipeline-diagram">
+      <div class="fs-panel-title" style="margin-bottom: 24px;">
+        <span class="icon">🔧</span> Deep-Live-Cam Complete Execution Graph
+      </div>
+      <div class="fs-pipeline-flow">
+        <div class="fs-flow-step">
+          <span class="step-icon">📸</span>
+          <span class="step-name">Source Face</span>
+          <span class="step-tech">Single 2D image</span>
+        </div>
+        <span class="fs-flow-arrow">→</span>
+
+        <div class="fs-flow-step">
+          <span class="step-icon">👁️</span>
+          <span class="step-name">Face Analysis</span>
+          <span class="step-tech">insightface / RetinaFace</span>
+        </div>
+        <span class="fs-flow-arrow">→</span>
+
+        <div class="fs-flow-step">
+          <span class="step-icon">🧬</span>
+          <span class="step-name">Identity Vector</span>
+          <span class="step-tech">ArcFace 512-D</span>
+        </div>
+        <span class="fs-flow-arrow">→</span>
+
+        <div class="fs-flow-step">
+          <span class="step-icon">🔄</span>
+          <span class="step-name">Neural Swap</span>
+          <span class="step-tech">inswapper_128.onnx</span>
+        </div>
+        <span class="fs-flow-arrow">→</span>
+
+        <div class="fs-flow-step">
+          <span class="step-icon">✨</span>
+          <span class="step-name">Restoration</span>
+          <span class="step-tech">GFPGAN / CodeFormer</span>
+        </div>
+        <span class="fs-flow-arrow">→</span>
+
+        <div class="fs-flow-step">
+          <span class="step-icon">🎨</span>
+          <span class="step-name">Poisson Blend</span>
+          <span class="step-tech">cv2.seamlessClone</span>
+        </div>
+        <span class="fs-flow-arrow">→</span>
+
+        <div class="fs-flow-step">
+          <span class="step-icon">📹</span>
+          <span class="step-name">Virtual Device</span>
+          <span class="step-tech">OBS / v4l2loopback</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ PROTECTION TIPS ═══════ -->
+  <div class="fs-tips-section">
+    <div class="fs-section-header">
+      <span class="fs-section-label">✦ FORENSIC HEURISTICS</span>
+      <h2>How to Spot a Live Face Swap in Real-Time</h2>
+    </div>
+
+    <div class="fs-tips-grid">
+      <div class="fs-tip-card">
+        <div class="fs-tip-num">01</div>
+        <div class="fs-tip-content">
+          <h4>Inspect the Hairline & Jaw Boundary</h4>
+          <p>
+            The Poisson blending boundary mask must feather into real skin. Look for a subtle blur,
+            faint discoloration "halo", or unnatural transition right below the jaw and around earlobes.
+          </p>
+        </div>
+      </div>
+
+      <div class="fs-tip-card">
+        <div class="fs-tip-num">02</div>
+        <div class="fs-tip-content">
+          <h4>Request a Steep Head Turn (&gt;30° Yaw)</h4>
+          <p>
+            Single-shot 2D swap models struggle severely with profile angles. When the person turns 30° to 45°
+            sideways, the face will warp unnaturally, stretch the nose, or pop back to their real face.
+          </p>
+        </div>
+      </div>
+
+      <div class="fs-tip-card">
+        <div class="fs-tip-num">03</div>
+        <div class="fs-tip-content">
+          <h4>Ask Them to Wave Their Hand in Front of Their Face</h4>
+          <p>
+            Hand or object occlusion instantly breaks face detection models. A hand passing across the face
+            causes the neural swap to glitch, disappear, or paint face features onto fingers.
+          </p>
+        </div>
+      </div>
+
+      <div class="fs-tip-card">
+        <div class="fs-tip-num">04</div>
+        <div class="fs-tip-content">
+          <h4>Examine Dynamic Lighting Reactions</h4>
+          <p>
+            Source face photos have static baked-in highlights. If the caller turns toward a window or screen,
+            their neck and background will light up, while the stitched face retains the source photo's lighting.
+          </p>
+        </div>
+      </div>
+
+      <div class="fs-tip-card">
+        <div class="fs-tip-num">05</div>
+        <div class="fs-tip-content">
+          <h4>Verify Rapid Micro-Blinks & Pupil Gaze</h4>
+          <p>
+            Current live swapper models frequently lose micro-saccades (tiny involuntary eye tremors) and natural
+            blink duration, producing "dead eyes" or eyes that look directly at the lens unnaturally.
+          </p>
+        </div>
+      </div>
+
+      <div class="fs-tip-card">
+        <div class="fs-tip-num">06</div>
+        <div class="fs-tip-content">
+          <h4>Deploy Automated PAD with DeepScan AI</h4>
+          <p>
+            Human eyes can be fooled in compressed video streams. DeepScan AI's dual-signal webcam inspector
+            analyzes pixel frequency, temporal consistency, and spatial features simultaneously.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer class="fs-footer">
+  <div>© 2026 DeepScan AI · <strong>Face-Stitching Lab</strong> · Educational & Forensic Simulation Only</div>
+  <div>
+    100% Browser-Based · Zero Data Upload · Safe Educational Demonstration ·
+    <a href="index.html">Return to DeepScan AI Dashboard →</a>
+  </div>
+  <div style="margin-top: 8px;">
+    Architecture study based on <a href="https://github.com/hacksider/Deep-Live-Cam" target="_blank" rel="noopener">Deep-Live-Cam (hacksider)</a> ·
+    This simulation runs locally using canvas compositing and does NOT produce weaponized deepfakes.
+  </div>
+</footer>
+
+<!-- ═══════ SCRIPTS ═══════ -->
+<script src="scripts/face-stitch.js"></script>
+</body>
+</html>
